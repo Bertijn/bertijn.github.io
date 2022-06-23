@@ -1,9 +1,10 @@
 import "./style.css";
 import * as THREE from "three";
+import gsap from 'gsap';
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 import { FontLoader } from "three/examples/jsm/loaders/FontLoader.js";
 import { TextGeometry } from "three/examples/jsm/geometries/TextGeometry.js";
-import * as dat from "lil-gui";
+import { GUI } from "lil-gui";
 
 // Cursor
 const cursor = {
@@ -24,13 +25,52 @@ const canvas = document.querySelector("canvas.webgl");
 
 // Scene
 const scene = new THREE.Scene();
-scene.background = new THREE.Color("#18082b");
+
+// Fog
+const fog = new THREE.Fog("#18082b", 1, 15);
+scene.fog = fog;
 
 /**
  * Textures
  */
 const textureLoader = new THREE.TextureLoader();
-const matcapTexture = textureLoader.load("textures/matcaps/5.png");
+const matcapTexture = textureLoader.load("textures/matcaps/4.png");
+const particleTexture = textureLoader.load("textures/particles/4.png");
+
+/**
+ * Particles
+ */
+// Geometry
+const particlesGeometry = new THREE.BufferGeometry()
+const count = 5000
+
+const positions = new Float32Array(count * 3)
+const colors = new Float32Array(count * 3)
+
+for (let i = 0; i < count * 3; i++) {
+    positions[i] = (Math.random() - 0.5) * 15
+    colors[i] = Math.random()
+}
+
+particlesGeometry.setAttribute('position', new THREE.BufferAttribute(positions, 3))
+
+// Material
+const particlesMaterial = new THREE.PointsMaterial({
+    color: '#ffffff',
+    // vertexColors: true,
+    transparent: true,
+    alphaMap: particleTexture,
+    // alphaTest: 0.001,
+    // depthTest: false,
+    depthWrite: false,
+    blending: THREE.AdditiveBlending,
+    size: 0.1,
+    sizeAttenuation: true
+})
+
+// Points
+const particles = new THREE.Points(particlesGeometry, particlesMaterial)
+scene.add(particles)
 
 /**
  * Fonts
@@ -76,20 +116,6 @@ fontLoader.load("/fonts/helvetiker_regular.typeface.json", (font) => {
     workInProgressText.position.y = -1;
 
     fontGroup.add(text, workInProgressText);
-
-    // Spheres
-    const sphereGeometry = new THREE.SphereGeometry(0.1, 5, 5);
-
-    for (let i = 0; i < 250; i++) {
-        const sphere = new THREE.Mesh(sphereGeometry, material);
-        sphere.position.x = (Math.random() - 0.5) * 20;
-        sphere.position.y = (Math.random() - 0.5) * 20;
-        sphere.position.z = (Math.random() - 0.5) * 20;
-        const scale = Math.random() * 0.5;
-        sphere.scale.set(scale, scale, scale);
-
-        scene.add(sphere);
-    }
 });
 
 /**
@@ -126,12 +152,12 @@ const camera = new THREE.PerspectiveCamera(
 );
 camera.position.x = 0;
 camera.position.y = -1;
-camera.position.z = 5;
+camera.position.z = 15;
 scene.add(camera);
 
-// // Controls
-// const controls = new OrbitControls(camera, canvas);
-// controls.enableDamping = true;
+// Controls
+const controls = new OrbitControls(camera, canvas);
+controls.enableDamping = true;
 
 /**
  * Renderer
@@ -141,22 +167,27 @@ const renderer = new THREE.WebGLRenderer({
 });
 renderer.setSize(sizes.width, sizes.height);
 renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+renderer.setClearColor(new THREE.Color("#18082b"))
 
 /**
  * Animate
  */
+gsap.to(camera.position, { duration: 2, z: 5 });
+
 const clock = new THREE.Clock();
 
 const tick = () => {
     const elapsedTime = clock.getElapsedTime();
 
-    // // Update controls
-    // controls.update();
+    // Update controls
+    controls.update();
+
+    // Update particles
+    particles.rotation.y = elapsedTime * 0.05;
 
     // Update camera
     camera.position.x = cursor.x * 3;
     camera.position.y = cursor.y * 3;
-    // camera.position.z = Math.cos(cursor.x * Math.PI * 2) * 2;
     camera.lookAt(fontGroup.position);
 
     // Render
