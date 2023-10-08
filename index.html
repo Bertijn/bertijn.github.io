@@ -1,6 +1,21 @@
 <!DOCTYPE html>
 <html lang="en">
 	<head>
+		<!-- Google tag (gtag.js) -->
+		<script
+			async
+			src="https://www.googletagmanager.com/gtag/js?id=G-T6WP5BBLQ2"
+		></script>
+		<script>
+			window.dataLayer = window.dataLayer || [];
+			function gtag() {
+				dataLayer.push(arguments);
+			}
+			gtag("js", new Date());
+
+			gtag("config", "G-T6WP5BBLQ2");
+		</script>
+
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<title>Bertijn Pauwels</title>
@@ -11,30 +26,33 @@
 		<link href="assets/styles/reset.css" rel="stylesheet" />
 		<link href="assets/styles/style.css" rel="stylesheet" />
 		<link href="assets/fonts/Voces-Regular.ttf" rel="preload" />
-        <script src="https://kit.fontawesome.com/a4565e99ae.js" crossorigin="anonymous"></script>
+		<script
+			src="https://kit.fontawesome.com/a4565e99ae.js"
+			crossorigin="anonymous"
+		></script>
 	</head>
 	<body>
 		<h1>[bɛr'tɪjn]</h1>
-        <button role="button" onclick="play()">
-            <i class="fa-solid fa-circle-play"></i>
-        </button>
-        <audio id="audio" src="assets/audio/bertijn.m4a"></audio>
-        <div class="socials">
-            <a href="https://www.linkedin.com/in/bertijn-pauwels">
-                <i class="fa-brands fa-linkedin"></i>
-            </a>
-            <a href="https://github.com/Bertijn">
-                <i class="fa-brands fa-square-github"></i>
-            </a>
-            <a href="mailto:bertijn.pauwels@hotmail.com">
-                <i class="fa-solid fa-square-envelope"></i>
-            </a>
-        </div>
+		<button role="button" onclick="play()">
+			<i class="fa-solid fa-circle-play"></i>
+		</button>
+		<audio id="audio" src="assets/audio/bertijn.m4a"></audio>
+		<div class="socials">
+			<a href="https://www.linkedin.com/in/bertijn-pauwels">
+				<i class="fa-brands fa-linkedin"></i>
+			</a>
+			<a href="https://github.com/Bertijn">
+				<i class="fa-brands fa-square-github"></i>
+			</a>
+			<a href="mailto:bertijn.pauwels@hotmail.com">
+				<i class="fa-solid fa-square-envelope"></i>
+			</a>
+		</div>
 		<script>
-            const play = () => {
-                const audio = document.querySelector('audio');
-                audio.play();
-            };
+			const play = () => {
+				const audio = document.querySelector("audio");
+				audio.play();
+			};
 		</script>
 	</body>
 </html>
