@@ -1,0 +1,34 @@
+---
+import Layout from "../layouts/Layout.astro";
+---
+
+<Layout title="Bertijn Pauwels">
+	<main class="h-full flex flex-col justify-center items-center">
+		<h1 class="text-5xl md:text-8xl font-semibold">[bɛr'tɪjn]</h1>
+
+		<button id="audio-button" role="button" class="m-6 transition-transform duration-200 ease-in-out hover:scale-110">
+			<span class="sr-only">Play</span>
+			<i class="fa-solid fa-circle-play w-11 h-11"></i>
+		</button>
+		<audio id="audio" src="/audio/bertijn.m4a"></audio>
+		<div class="fixed bottom-0 right-0 p-6">
+			<a href="https://www.linkedin.com/in/bertijn-pauwels" class="inline-block transition-transform duration-200 ease-in-out hover:scale-110">
+				<span class="sr-only">LinkedIn</span>
+				<i class="fa-brands fa-linkedin w-11 h-11"></i>
+			</a>
+			<a href="https://github.com/Bertijn" class=" inline-block transition-transform duration-200 ease-in-out hover:scale-110">
+				<span class="sr-only">GitHub</span>
+				<i class="fa-brands fa-square-github w-11 h-11"></i>
+			</a>
+			<a href="mailto:bertijn.pauwels@hotmail.com" class="inline-block transition-transform duration-200 ease-in-out hover:scale-110">
+				<span class="sr-only">Email</span>
+				<i class="fa-solid fa-square-envelope w-11 h-11"></i>
+			</a>
+		</div>
+	</main>
+	<script>
+		const audio = document.getElementById("audio") as HTMLAudioElement;
+		const audioButton = document.getElementById("audio-button");
+		audioButton?.addEventListener("click", () => audio?.play());
+	</script>
+</Layout>
