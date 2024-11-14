@@ -7,7 +7,6 @@ import partytown from '@astrojs/partytown'
 // https://astro.build/config
 export default defineConfig({
 	site: "https://bertijn.com",
-	base: "astro-blog",
 	integrations: [
 		tailwind({ applyBaseStyles: false }),
 		partytown({
