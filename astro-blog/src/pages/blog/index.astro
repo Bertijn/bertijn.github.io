@@ -1,8 +1,8 @@
 ---
-import qs from 'qs';
+import qs from "qs";
 import BlogLayout from "../../layouts/BlogLayout.astro";
 
-let url = import.meta.env.STRAPI_URL + '/api/posts';
+let url = import.meta.env.STRAPI_URL + "/api/posts";
 
 const query = qs.stringify({
 	populate: {
@@ -22,7 +22,9 @@ const query = qs.stringify({
 	},
 });
 
-const posts = await fetch(url + "?" + query).then((response) => response.json()).catch((error) => console.error(error));
+const posts = await fetch(url + "?" + query)
+	.then((response) => response.json())
+	.catch((error) => console.error(error));
 ---
 
 <BlogLayout title="All Posts">
@@ -31,22 +33,21 @@ const posts = await fetch(url + "?" + query).then((response) => response.json())
 			{
 				posts.data.map((post: any) => {
 					const headerImageUrl = post.featuredImage?.url || null;
+					const authorImageUrl = post.author?.bioImage.url || null;
 					return (
-						<a
-							href={`/blog/${post.slug}`}
-							class="block bg-white rounded-lg shadow-md overflow-hidden w-full hover:shadow-lg transition-shadow duration-300 mx-auto"
-						>
+						<div class="bg-white rounded-lg shadow-md w-full hover:shadow-lg transition-shadow duration-200 mx-auto cursor-pointer overflow-hidden relative">
 							{headerImageUrl && (
 								<img
-									src={`${import.meta.env.STRAPI_URL}${headerImageUrl}`}
+									src={headerImageUrl}
 									alt="Article Header Image"
 									class="w-full h-48 object-cover"
 								/>
 							)}
-							<div class="p-4">
+							<div class="p-4 pb-0">
 								<h2 class="text-xl font-bold mb-2">
 									{post.title}
 								</h2>
+								<p class="my-2 text-gray-700 line-clamp-3">{post.excerpt}</p>
 								<p class="text-gray-600 text-sm">
 									Published on:{" "}
 									{new Date(
@@ -54,7 +55,29 @@ const posts = await fetch(url + "?" + query).then((response) => response.json())
 									).toLocaleDateString()}
 								</p>
 							</div>
-						</a>
+							<div class="flex justify-between my-4 mx-4 items-center">
+								<div class="flex space-x-2 items-center overflow-hidden">
+									{authorImageUrl && (
+										<img
+											src={authorImageUrl}
+											alt={post.author?.name}
+											class="inline-block h-8 w-8 rounded-full ring-2 ring-white"
+										/>
+									)}
+									<p class="font-medium text-xs text-gray-600 cursor-pointer">
+									{post.author?.name}
+									</p>
+								</div>
+								<div class="inline-flex rounded-md">
+									<a
+										href={`/blog/${post.slug}`}
+										class="inline-flex items-center justify-center px-5 py-2 border border-transparent text-base font-medium rounded-md text-white bg-text hover:bg-text/90 transition-colors duration-200 before:absolute before:inset-0"
+									>
+										Read article
+									</a>
+								</div>
+							</div>
+						</div>
 					);
 				})
 			}

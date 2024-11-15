@@ -52,11 +52,21 @@ const publishDate = new Date(post.publishedAt).toLocaleDateString("en-US", {
 ---
 
 <BlogLayout title={post.title}>
-	<article class="prose prose-lg max-w-2xl mx-auto py-24">
+	<article
+		class="prose prose-lg max-w-2xl mx-auto py-24 pt-12 prose-li:marker:text-text"
+	>
+		<div class="w-full flex justify-end rounded-md">
+			<a
+				href={`/blog`}
+				class="inline-flex items-center justify-center px-5 py-2 border border-transparent no-underline text-base font-medium rounded-md text-white bg-text hover:bg-text/90 transition-colors duration-200"
+			>
+				Back
+			</a>
+		</div>
 		{
 			headerImageUrl && (
 				<img
-					src={`${import.meta.env.STRAPI_URL}${headerImageUrl}`}
+					src={headerImageUrl}
 					alt={post.title}
 					class="mb-6 w-full h-auto rounded-lg"
 				/>
